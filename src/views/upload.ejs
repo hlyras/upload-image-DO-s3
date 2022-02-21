@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('./partials/head.ejs') %>
+</head>
+<body class="container">
+	<h1 class="box b1 lucida-grande padding-10 center">DigitalOcean Spaces</h1>
+	<div class="box b3 border container padding-10 margin-top-5">
+		<%- include('./partials/panel.ejs') %>
+	</div>
+	
+	<div class="box b3 border container padding-10 margin-top-5">
+		<h2 class="lucida-grande">Upload a file</h3>
+		<form action="/upload" method="POST" enctype="multipart/form-data" class="box b1 border padding-10 margin-top-5">
+			<label for="file">Choose a File</label>
+			<input type="file" id="file" name="file" class="box b1 margin-top-5">
+			<button type="submit" class="box b1 submit-generic margin-top-5">Upload</button>
+		</form>
+	</div>
+	<div class="box b3 border container padding-10 margin-top-5">
+		<img id="imgPreview" class="image-fit max-width-100 center" />
+	</div>
+</body>
+<script>
+	const file = document.querySelector("#file");
+	const imgPreview = document.querySelector("#imgPreview");
+
+	file.addEventListener("change", e => {
+		const selectedFile = e.target.files[0];
+
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			imgPreview.src = reader.result;
+		};
+		reader.readAsDataURL(selectedFile);
+	})
+</script>
+</html>

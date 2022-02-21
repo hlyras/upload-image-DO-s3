@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('./partials/head.ejs') %>
+</head>
+<body class="container">
+	<h1 class="box b1 lucida-grande padding-10 center">DigitalOcean Spaces</h1>
+	<div class="box b3 border container padding-10 margin-top-5">
+		<%- include('./partials/panel.ejs') %>
+	</div>
+
+	<div class="box b2-3 container border padding-10 margin-top-5">
+		<% if(images.length) { %>
+			<% images.forEach(function(image) { %>
+			<div class="box b4 center">
+				<img id="imgPreview" class="image-fit max-width-100 center" src="<%= image.url %>" />
+			</div>
+			<% }) %>
+		<% } else { %>
+		<div class="box b1 center">Sem imagens</div>
+		<% } %>
+	</div>
+</body>
+</html>
