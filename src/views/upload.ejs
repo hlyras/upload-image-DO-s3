@@ -2,7 +2,12 @@
 <html>
 <head>
 	<%- include('./partials/head.ejs') %>
+	<style type="text/css">
+		.scroll-x { overflow-x: scroll; white-space: nowrap; }
+	</style>
 </head>
+
+
 <body class="container">
 	<h1 class="box b1 lucida-grande padding-10 center">DigitalOcean Spaces</h1>
 	<div class="box b3 border container padding-10 margin-top-5">
@@ -12,27 +17,92 @@
 	<div class="box b3 border container padding-10 margin-top-5">
 		<h2 class="lucida-grande">Upload a file</h3>
 		<form action="/upload" method="POST" enctype="multipart/form-data" class="box b1 border padding-10 margin-top-5">
-			<label for="file">Choose a File</label>
-			<input type="file" id="file" name="file" class="box b1 margin-top-5">
+			<label for="files">Choose a File</label>
+			<input type="file" id="files" name="files" class="box b1 margin-top-5" accept="image/*" multiple required>
 			<button type="submit" class="box b1 submit-generic margin-top-5">Upload</button>
 		</form>
 	</div>
-	<div class="box b3 border container padding-10 margin-top-5">
-		<img id="imgPreview" class="image-fit max-width-100 center" />
+	<div id="imgPreview" class="box b3 border padding-10 margin-top-5 scroll-x">
+		
 	</div>
 </body>
 <script>
-	const file = document.querySelector("#file");
-	const imgPreview = document.querySelector("#imgPreview");
+	const file = document.getElementById("files");
+	let fileStore = [];
+
+	function removeFileFromFileList(imgName) {
+		const dt = new DataTransfer();
+		const input = document.getElementById('files');
+		const { files } = input;
+		const fileStoreRemove = [];
+
+		for (let i = 0; i < files.length; i++) {
+			if (imgName !== files[i].name){
+			  dt.items.add(files[i]);
+			  fileStoreRemove.push(files[i]);
+			}
+		};
+
+		fileStore = fileStoreRemove;
+		input.files = dt.files;
+		drawImages(input.files);
+	};
+
+	function drawImages(files) {
+		document.getElementById("imgPreview").innerHTML = "";
+
+		for(let i in files) {
+			if(files[i].image){
+				document.getElementById("imgPreview").innerHTML += "<img onclick='removeFileFromFileList(`"+files[i].name+"`)' src='"+files[i].image+"' class='ground height-100 padding-10 margin-left-10 center border shadow-hover' />";
+			}
+		};
+	};
+
+	function setFileList(files) {
+		const dt = new DataTransfer();
+		const input = document.getElementById('files');
+
+		for(let i in files){
+			dt.items.add(files[i]);
+		};
+
+		input.files = dt.files;
+		drawImages(input.files);
+	};
+
+	function getFiles(files){
+		let reader = new FileReader();
+
+		function readFile(index) {
+			if(index >= files.length) return setFileList(fileStore);
+
+			reader.onload = (e) => {
+				files[index].image = e.target.result;
+
+				fileStore.push(files[index]);
+
+				readFile(index + 1);
+			};
+
+			reader.readAsDataURL(files[index]);
+		};
+
+		readFile(0);
+	};
 
 	file.addEventListener("change", e => {
-		const selectedFile = e.target.files[0];
+		let files = e.target.files;
 
-		const reader = new FileReader();
-		reader.onloadend = () => {
-			imgPreview.src = reader.result;
+		for(let i in files) {
+			for(let j in fileStore) {
+				if(files[i].name == fileStore[j].name) {
+					setFileList(fileStore);
+					return alert("Não é permitido adicionar arquivos duplicados");
+				}
+			};
 		};
-		reader.readAsDataURL(selectedFile);
-	})
+
+		getFiles(files);
+	});
 </script>
 </html>
