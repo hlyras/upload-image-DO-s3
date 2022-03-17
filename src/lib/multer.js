@@ -9,9 +9,8 @@ module.exports = (multer({
             cb(null, Date.now().toString() + '-' + file.originalname);
         }
     }),
-
     fileFilter: (req, file, cb) => {
-        const isAccepted = ['image/png', 'image/jpg', 'image/jpeg', , 'image/webp'].find( formatoAceito => formatoAceito == file.mimetype );
+        const isAccepted = ['image/png','image/jpg','image/jpeg','image/webp'].find(formatoAceito => formatoAceito == file.mimetype);
 
         if(isAccepted){ return cb(null, true); }
         

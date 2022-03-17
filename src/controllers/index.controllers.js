@@ -14,15 +14,17 @@ const renderIndex = (req, res) => {
 };
 
 const uploadFile = async (req, res) => {
-	console.log(req.file);
+	console.log(req.files);
 
-	compressImage(req.file, 500)
+	req.files.forEach(file => {
+		compressImage(file, 500)
             .then(async newPath => {
-				await uploadFileS3(newPath, req.file.filename.split('.')[0] + '.webp');
+				await uploadFileS3(newPath, file.filename.split('.')[0] + '.webp');
 				await unlinkFile(newPath);
-				await unlinkFile(req.file.path);
+				await unlinkFile(file.path);
              })
             .catch(err => console.log(err) );
+	})
 
 	res.send("ok");
 };

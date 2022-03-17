@@ -13,6 +13,6 @@ const { renderIndex, uploadFile } = require("../controllers/index.controllers");
 
 router.get("/", renderIndex);
 // router.get("/files", getFiles);
-router.post("/upload", multer.single('file'), uploadFile);
+router.post("/upload", multer.any('files'), uploadFile);
 
 module.exports = router;

@@ -23,12 +23,24 @@
 		</form>
 	</div>
 	<div id="imgPreview" class="box b3 border padding-10 margin-top-5 scroll-x">
-		
+	
 	</div>
 </body>
 <script>
 	const file = document.getElementById("files");
 	let fileStore = [];
+
+	function drawImages(files) {
+		document.getElementById("imgPreview").innerHTML = "";
+
+		for(let i in files) {
+			if(files[i].image){
+				document.getElementById("imgPreview").innerHTML += "<div onclick='removeFileFromFileList(`"+files[i].name+"`)' class='ground height-125 width-125 center border shadow-hover noselect margin-left-10' style='display: inline-block;'>\
+						<img src='"+files[i].image+"' class='noselect' style='max-width:100%;max-height: 100%;'>\
+					</div>";
+			}
+		};
+	};
 
 	function removeFileFromFileList(imgName) {
 		const dt = new DataTransfer();
@@ -46,16 +58,6 @@
 		fileStore = fileStoreRemove;
 		input.files = dt.files;
 		drawImages(input.files);
-	};
-
-	function drawImages(files) {
-		document.getElementById("imgPreview").innerHTML = "";
-
-		for(let i in files) {
-			if(files[i].image){
-				document.getElementById("imgPreview").innerHTML += "<img onclick='removeFileFromFileList(`"+files[i].name+"`)' src='"+files[i].image+"' class='ground height-100 padding-10 margin-left-10 center border shadow-hover' />";
-			}
-		};
 	};
 
 	function setFileList(files) {
@@ -90,17 +92,21 @@
 		readFile(0);
 	};
 
-	file.addEventListener("change", e => {
-		let files = e.target.files;
-
-		for(let i in files) {
-			for(let j in fileStore) {
-				if(files[i].name == fileStore[j].name) {
-					setFileList(fileStore);
+	function verifyDuplicity(fls, flst) {
+		for(let i in fls) {
+			for(let j in flst) {
+				if(fls[i].name == flst[j].name) {
+					setFileList(flst);
 					return alert("Não é permitido adicionar arquivos duplicados");
 				}
 			};
 		};
+	};
+
+	file.addEventListener("change", e => {
+		let files = e.target.files;
+
+		verifyDuplicity(files, fileStore);
 
 		getFiles(files);
 	});
