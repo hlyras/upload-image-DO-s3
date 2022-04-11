@@ -3,9 +3,6 @@ const { uploadFileS3 } = require("../lib/s3");
 const { compressImage } = require("../lib/sharp");
 
 const fs = require("fs");
-const util = require("util");
-const unlinkFile = util.promisify(fs.unlink);
-
 
 const renderIndex = (req, res) => {
 	res.render('upload', {
@@ -14,22 +11,17 @@ const renderIndex = (req, res) => {
 };
 
 const uploadFile = async (req, res) => {
-	console.log(req.files);
+	for(let i in req.files){
+		let newPath = await compressImage(req.files[i], 425);
+		let imageData = await uploadFileS3(newPath, req.files[i].filename.split('.')[0] + '.png');
+		console.log(imageData);
+		await fs.promises.unlink(newPath);
+	};
 
-	req.files.forEach(file => {
-		compressImage(file, 500)
-            .then(async newPath => {
-				await uploadFileS3(newPath, file.filename.split('.')[0] + '.webp');
-				await unlinkFile(newPath);
-				await unlinkFile(file.path);
-             })
-            .catch(err => console.log(err) );
-	})
-
-	res.send("ok");
+	res.send({ msg: 'upload realizado com sucesso' });
 };
 
 module.exports = {
 	renderIndex,
 	uploadFile
-}
+};
