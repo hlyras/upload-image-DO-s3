@@ -1,17 +1,20 @@
 const db = require('../config/connection');
 
-const Image = function(url){
+const Image = function(){
 	this.id = 0;
-	this.url = url;
+	this.etag;
+	this.url;
+	this.key;
 
 	this.save = () => {
-		let query = "INSERT INTO cms_wt_dospaces.image (url) VALUES ('"+this.url+"');";
+		let query = `INSERT INTO spaces.image (etag, url, keycode) VALUES ('${this.etag}','${this.url}','${this.key}');`;
+		console.log(query);
     	return db(query);
 	};
 };
 
 Image.list = () => {
-	let query = "SELECT * FROM cms_wt_dospaces.image;";
+	let query = "SELECT * FROM spaces.image;";
 	return db(query);
 };
 
