@@ -4,6 +4,19 @@
 <%- include('./partials/head.ejs') %>
 <style type="text/css">
 	.scroll-x { overflow-x: scroll; white-space: nowrap; }
+	.remove-icon { 
+		display:none;
+		position:absolute;
+		top:50px;
+		left:50px;
+	}
+
+	.remove-icon:hover { 
+		display: block; 
+	}
+
+	.product-image {}
+	.product-image:hover + .remove-icon { display: block; }
 </style>
 </head>
 <body class="container">
@@ -23,7 +36,12 @@
 			<button type="submit" class="box b1 submit-generic margin-top-5">Upload</button>
 		</form>
 	</div>
-	<div id="imgPreview" class="box b3 border padding-10 margin-top-5 scroll-x"></div>
+	<div id="preview-box" class="box b3 border padding-10 margin-top-5 scroll-x"></div>
+
+	<div id="" class="box b1 container">
+		
+	</div>
+
 </body>
 <%- include('./partials/footer.ejs') %>
 <script src="upload.js"></script>

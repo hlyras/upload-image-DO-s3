@@ -2,13 +2,30 @@ const file = document.getElementById("files");
 let fileStore = [];
 
 function drawImages(files) {
-	document.getElementById("imgPreview").innerHTML = "";
+	let preview_box = document.getElementById("preview-box");
+	preview_box.innerHTML = "";
 
 	for(let i in files) {
 		if(files[i].image){
-			document.getElementById("imgPreview").innerHTML += "<div onclick='removeFileFromFileList(`"+files[i].name+"`)' class='ground height-125 width-125 center border shadow-hover noselect margin-left-10' style='display: inline-block;'>\
-					<img src='"+files[i].image+"' class='noselect' style='max-width:100%;max-height: 100%;'>\
-				</div>";
+
+			let image_div = lib.element.create("div", {
+				class: 'ground height-150 width-150 center border shadow-hover noselect margin-left-10 pointer relative',
+				style: 'display: inline-block;'
+			});
+
+			image_div.append(lib.element.create("img", {
+				src: `${files[i].image}`,
+				class: 'product-image noselect pointer',
+				style: 'max-width:100%;max-height:100%;'
+			}));
+
+			image_div.append(lib.element.create("img", {
+				onclick: `removeFileFromFileList('${files[i].name}')`,
+				class: "width-50 height-50 remove-icon opacity-out-05 pointer",
+				src: "https://spaces.jariomilitar.com/erp-images/icon/trash-white.png"
+			}));
+
+			preview_box.append(image_div);
 		}
 	};
 };

@@ -8,7 +8,6 @@ const Image = function(){
 
 	this.save = () => {
 		let query = `INSERT INTO spaces.image (etag, url, keycode) VALUES ('${this.etag}','${this.url}','${this.key}');`;
-		console.log(query);
     	return db(query);
 	};
 };

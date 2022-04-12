@@ -2,6 +2,21 @@
 <html>
 <head>
 	<%- include('./partials/head.ejs') %>
+	<style type="text/css">
+		.remove-icon { 
+			display:none;
+			position:absolute;
+			top:50px;
+			left:50px;
+		}
+
+		.remove-icon:hover { 
+			display: block; 
+		}
+
+		.product-image {}
+		.product-image:hover + .remove-icon { display: block; }
+	</style>
 </head>
 <body class="container">
 	<h1 class="box b1 lucida-grande padding-10 center">DigitalOcean Spaces</h1>
@@ -9,15 +24,16 @@
 		<%- include('./partials/panel.ejs') %>
 	</div>
 
-	<div class="box b2-3 container border padding-10 margin-top-5">
+	<div class="box b2-3 border padding-10 margin-top-5 scroll-x">
 		<% if(images.length) { %>
 			<% images.forEach(function(image) { %>
-			<div class="box b4 center">
-				<img id="imgPreview" class="image-fit max-width-100 center" src="<%= image.url %>" />
+			<div class="box ground height-150 width-150 border shadow-hover noselect margin-left-10 center pointer relative" style="display: inline-block;">
+				<img src="<%= image.url %>" class="product-image noselect pointer" style="max-width:100%;max-height:100%;" />
+				<img src="https://spaces.jariomilitar.com/erp-images/icon/trash-white.png" class="width-50 height-50 remove-icon opacity-out-05 pointer" onclick="deleteImageFromSpaces('<%= image.key %>')" />
 			</div>
 			<% }) %>
 		<% } else { %>
-		<div class="box b1 center">Sem imagens</div>
+			<div class="box b1 center">Sem imagens</div>
 		<% } %>
 	</div>
 </body>
