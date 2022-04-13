@@ -111,10 +111,18 @@ document.getElementById("upload-form").addEventListener("submit", async e => {
 		data.append('file', input.files[i]);
 	};
 
-	console.log(data);
-
 	fetch('/upload', {
 	  method: 'POST',
 	  body: data
 	});
-})
+});
+
+function deleteImageFromSpaces(keycode) {
+	console.log(keycode);
+
+	fetch('/delete', {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({ keycode })
+	});
+};

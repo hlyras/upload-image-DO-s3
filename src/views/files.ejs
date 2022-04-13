@@ -29,7 +29,7 @@
 			<% images.forEach(function(image) { %>
 			<div class="box ground height-150 width-150 border shadow-hover noselect margin-left-10 center pointer relative" style="display: inline-block;">
 				<img src="<%= image.url %>" class="product-image noselect pointer" style="max-width:100%;max-height:100%;" />
-				<img src="https://spaces.jariomilitar.com/erp-images/icon/trash-white.png" class="width-50 height-50 remove-icon opacity-out-05 pointer" onclick="deleteImageFromSpaces('<%= image.key %>')" />
+				<img src="https://spaces.jariomilitar.com/erp-images/icon/trash-white.png" class="width-50 height-50 remove-icon opacity-out-05 pointer" onclick="deleteImageFromSpaces('<%= image.keycode %>')" />
 			</div>
 			<% }) %>
 		<% } else { %>
@@ -37,4 +37,6 @@
 		<% } %>
 	</div>
 </body>
+<%- include('./partials/footer.ejs') %>
+<script src="upload.js"></script>
 </html>

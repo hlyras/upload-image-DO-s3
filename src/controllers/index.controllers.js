@@ -1,5 +1,5 @@
 const Image = require('../models/image');
-const { uploadFileS3 } = require("../lib/s3");
+const { uploadFileS3, deleteFileS3 } = require("../lib/s3");
 const { compressImage } = require("../lib/sharp");
 
 const fs = require("fs");
@@ -18,7 +18,9 @@ const uploadFile = async (req, res) => {
 	for(let i in req.files){
 		let newPath = await compressImage(req.files[i], 425);
 		let imageData = await uploadFileS3(newPath, req.files[i].filename.split('.')[0] + '.png');
-		await fs.promises.unlink(newPath);
+
+		fs.promises.unlink(newPath);
+		req.files[i].mimetype != 'image/png' && fs.promises.unlink(req.files[i].path);
 
 		let image = new Image();
 		image.etag = imageData.ETag.replaceAll(`"`, "");
@@ -31,23 +33,20 @@ const uploadFile = async (req, res) => {
 };
 
 const deleteFile = async (req, res) => {
-	
-
-	// const param = {
-	//     Bucket: process.env.BUCKET_NAME,
-	//     Key: fileName
-	// };
-
-	// s3.deleteObject(param, function (err, data) {
-	//     if (err) { console.log('err', err) }
-	//     console.log('data', data)
-	// });
-
-	res.send({ msg: 'Imagem deletada com sucesso!' });
+	try {
+		await deleteFileS3(req.body.keycode);
+		await Image.delete(req.body.keycode);
+		
+		res.send({ msg: 'Imagem deletada com sucesso!' });
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: 'Ocorreu um erro ao excluir a imagem.' });
+	}
 };
 
 module.exports = {
 	renderIndex,
+	getFiles,
 	uploadFile,
-	getFiles
+	deleteFile
 };
