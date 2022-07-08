@@ -7,8 +7,8 @@
 	.remove-icon { 
 		display:none;
 		position:absolute;
-		top:50px;
-		left:50px;
+		top:35px;
+		left:35px;
 	}
 
 	.remove-icon:hover { display: block; }
@@ -23,20 +23,27 @@
 		<%- include('./partials/panel.ejs') %>
 	</div>
 	
-	<div class="box b3 border container padding-10 margin-top-5">
-		<h2 class="lucida-grande">Upload a file</h3>
-		<form id="upload-form" enctype="multipart/form-data" class="box b1 border padding-10 margin-top-5">
-			<div class="box b1 margin-top-5">
-				<label for="files" class="em09">Selecionar imagens</label>
-				<input type="file" id="files" name="files" class="box b1 margin-top-5" accept="image/*" multiple required>
+	<div class="box b2-3 border container padding-10 margin-top-5">
+		<label for="files" class="box b8 container height-125 border-lg-st radius-5 ground center">
+			<div class="box b1 center pointer">
+				<img src="https://wt-images-cdn.sfo3.digitaloceanspaces.com/erp-images/icon/add-image.png" class="image-prop size-30 center">
+				<div class="box b1 lucida-grande em08 center">Adicionar</div>
 			</div>
-			<button type="submit" class="box b1 submit-generic margin-top-5">Upload</button>
+		</label>
+
+		<div id="preview-box" class="box b3-4 border padding-5 height-125 scroll-x"></div>
+		
+		<form id="upload-form" enctype="multipart/form-data" class="box b8 center">
+			<input type="file" id="files" name="files" class="box b1 margin-top-5" accept="image/*" multiple hidden>
+			<button type="submit" class="box b1 lucida-grande bold border-lg-st radius-5 height-125 center pointer">Confirmar</button>
 		</form>
 	</div>
-	<div id="preview-box" class="box b3 border padding-10 margin-top-5 scroll-x"></div>
 	<%- include('./partials/loader.ejs') %>
 </body>
 <%- include('./partials/footer.ejs') %>
 <script src="image/model.js"></script>
 <script src="upload.js"></script>
+<script>
+	drawImages([]);
+</script>
 </html>

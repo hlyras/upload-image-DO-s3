@@ -9,7 +9,7 @@ function drawImages(files) {
 		if(files[i].image){
 
 			let image_div = lib.element.create("div", {
-				class: 'ground height-150 width-150 border shadow-hover noselect margin-left-10 relative',
+				class: 'ground height-90 width-90 border shadow-hover noselect margin-left-10 relative',
 				style: 'display: inline-block;vertical-align:top;'
 			});
 
@@ -20,7 +20,7 @@ function drawImages(files) {
 
 			image_div.append(lib.element.create("img", {
 				onclick: `removeFileFromFileList('${files[i].name}')`,
-				class: "width-50 height-50 remove-icon opacity-out-05 center pointer",
+				class: "width-30 height-30 remove-icon opacity-out-05 center pointer",
 				src: "https://spaces.jariomilitar.com/erp-images/icon/junk.png"
 			}));
 
@@ -112,6 +112,7 @@ document.getElementById("upload-form").addEventListener("submit", async e => {
 	e.preventDefault();
 
 	const input = document.getElementById('files');
+	if(!input.files.length){ return alert("É necessário incluir ao menos uma imagem para fazer upload."); }
 
 	let data = new FormData();
 	
