@@ -11,9 +11,7 @@
 		left:50px;
 	}
 
-	.remove-icon:hover { 
-		display: block; 
-	}
+	.remove-icon:hover { display: block; }
 
 	.product-image {}
 	.product-image:hover + .remove-icon { display: block; }
@@ -28,7 +26,6 @@
 	<div class="box b3 border container padding-10 margin-top-5">
 		<h2 class="lucida-grande">Upload a file</h3>
 		<form id="upload-form" enctype="multipart/form-data" class="box b1 border padding-10 margin-top-5">
-			<input type="text" name="name" class="box b1 input-generic margin-top-5 nofocus center" autocomplete="off">
 			<div class="box b1 margin-top-5">
 				<label for="files" class="em09">Selecionar imagens</label>
 				<input type="file" id="files" name="files" class="box b1 margin-top-5" accept="image/*" multiple required>
@@ -37,7 +34,9 @@
 		</form>
 	</div>
 	<div id="preview-box" class="box b3 border padding-10 margin-top-5 scroll-x"></div>
+	<%- include('./partials/loader.ejs') %>
 </body>
 <%- include('./partials/footer.ejs') %>
+<script src="image/model.js"></script>
 <script src="upload.js"></script>
 </html>

@@ -4,14 +4,17 @@ const { compressImage } = require("../lib/sharp");
 
 const fs = require("fs");
 
-const renderIndex = async (req, res) => {
+const index = async (req, res) => {
 	res.render('upload');
+};
+
+const files = async (req, res) => {
+	res.render('files');
 };
 
 const getFiles = async (req, res) => {
 	let images = await Image.list();
-
-	res.render('files', { images });
+	res.send(images);
 };
 
 const uploadFile = async (req, res) => {
@@ -29,15 +32,15 @@ const uploadFile = async (req, res) => {
 		await image.save();
 	};
 
-	res.send({ msg: 'upload realizado com sucesso' });
+	res.send({ done: 'upload realizado com sucesso' });
 };
 
 const deleteFile = async (req, res) => {
 	try {
 		await deleteFileS3(req.body.keycode);
 		await Image.delete(req.body.keycode);
-		
-		res.send({ msg: 'Imagem deletada com sucesso!' });
+
+		res.send({ done: 'Imagem deletada com sucesso!' });
 	} catch (err) {
 		console.log(err);
 		res.send({ msg: 'Ocorreu um erro ao excluir a imagem.' });
@@ -45,7 +48,8 @@ const deleteFile = async (req, res) => {
 };
 
 module.exports = {
-	renderIndex,
+	index,
+	files,
 	getFiles,
 	uploadFile,
 	deleteFile

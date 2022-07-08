@@ -24,19 +24,13 @@
 		<%- include('./partials/panel.ejs') %>
 	</div>
 
-	<div class="box b2-3 border padding-10 margin-top-5 scroll-x">
-		<% if(images.length) { %>
-			<% images.forEach(function(image) { %>
-			<div class="box ground height-150 width-150 border shadow-hover noselect margin-left-10 center pointer relative" style="display: inline-block;">
-				<img src="<%= image.url %>" class="product-image noselect pointer" style="max-width:100%;max-height:100%;" />
-				<img src="https://spaces.jariomilitar.com/erp-images/icon/trash-white.png" class="width-50 height-50 remove-icon opacity-out-05 pointer" onclick="deleteImageFromSpaces('<%= image.keycode %>')" />
-			</div>
-			<% }) %>
-		<% } else { %>
-			<div class="box b1 center">Sem imagens</div>
-		<% } %>
-	</div>
+	<div id="preview-box" class="box b2-3 border padding-10 margin-top-5 scroll-x"></div>
+	<%- include('./partials/loader.ejs') %>
 </body>
 <%- include('./partials/footer.ejs') %>
-<script src="upload.js"></script>
+<script src="image/model.js"></script>
+<script src="files.js"></script>
+<script>
+	list();
+</script>
 </html>

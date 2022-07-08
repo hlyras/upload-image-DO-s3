@@ -2,11 +2,12 @@ const router = require("express").Router();
 
 const multer = require('../lib/multer');
 
-const { renderIndex, getFiles, uploadFile, deleteFile } = require("../controllers/index.controllers");
+const { index, files, getFiles, uploadFile, deleteFile } = require("../controllers/index.controllers");
 
-router.get("/", renderIndex);
-router.get("/files", getFiles);
+router.get("/", index);
+router.get("/files", files);
+router.get("/list", getFiles);
 router.post("/upload", multer.any('files'), uploadFile);
-router.post("/delete", deleteFile);
+router.delete("/delete", deleteFile);
 
 module.exports = router;

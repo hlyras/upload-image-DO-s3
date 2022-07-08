@@ -9,20 +9,19 @@ function drawImages(files) {
 		if(files[i].image){
 
 			let image_div = lib.element.create("div", {
-				class: 'ground height-150 width-150 center border shadow-hover noselect margin-left-10 pointer relative',
-				style: 'display: inline-block;'
+				class: 'ground height-150 width-150 border shadow-hover noselect margin-left-10 relative',
+				style: 'display: inline-block;vertical-align:top;'
 			});
 
 			image_div.append(lib.element.create("img", {
 				src: `${files[i].image}`,
-				class: 'product-image noselect pointer',
-				style: 'max-width:100%;max-height:100%;'
+				class: 'product-image image-fit noselect'
 			}));
 
 			image_div.append(lib.element.create("img", {
 				onclick: `removeFileFromFileList('${files[i].name}')`,
-				class: "width-50 height-50 remove-icon opacity-out-05 pointer",
-				src: "https://spaces.jariomilitar.com/erp-images/icon/trash-white.png"
+				class: "width-50 height-50 remove-icon opacity-out-05 center pointer",
+				src: "https://spaces.jariomilitar.com/erp-images/icon/junk.png"
 			}));
 
 			preview_box.append(image_div);
@@ -44,6 +43,16 @@ function removeFileFromFileList(imgName) {
 	};
 
 	fileStore = fileStoreRemove;
+	input.files = dt.files;
+	drawImages(input.files);
+};
+
+function clearFileList() {
+	const dt = new DataTransfer();
+	const input = document.getElementById('files');
+	const { files } = input;
+
+	fileStore = [];
 	input.files = dt.files;
 	drawImages(input.files);
 };
@@ -106,23 +115,15 @@ document.getElementById("upload-form").addEventListener("submit", async e => {
 
 	let data = new FormData();
 	
-	data.append('name', e.target.elements.namedItem('name').value);
+	// data.append('name', e.target.elements.namedItem('name').value);
 	for(let i in input.files) {
 		data.append('file', input.files[i]);
 	};
 
-	fetch('/upload', {
-	  method: 'POST',
-	  body: data
-	});
+	let response = await API.response(Image.upload, data);
+	if(!response) { return false; }
+
+	alert(response.done);
+
+	clearFileList();
 });
-
-function deleteImageFromSpaces(keycode) {
-	console.log(keycode);
-
-	fetch('/delete', {
-		method: 'POST',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({ keycode })
-	});
-};
